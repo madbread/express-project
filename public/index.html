@@ -16,7 +16,106 @@
 
     <main ng-if="pageStateVM.userState.authorized">
 
-      <pattern></pattern>
+      <section>
+        <table>
+          <thead>
+            <tr>
+              <td>venue</td>
+              <td>date</td>
+              <td>edit</td>
+              <td>delete</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="show in pageStateVM.showData.shows">
+              <td>{{show.venue}}</td>
+              <td>{{show.date}}</td>
+              <td class="align-center">
+                <a href="#" ng-click="pageStateVM.addShowToForm(show)">
+                  <i class="fa fa-pencil"></i>
+                </a>
+              </td>
+              <td class="align-center">
+                <a href="#" ng-click="pageStateVM.deleteShow(show._id)">
+                  <i class="fa fa-remove"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <span
+          ng-click="pageStateVM.showForm = true"
+          ng-hide="pageStateVM.showForm"
+          class="but"
+        >
+          <i class="fa fa-plus"></i>
+          {{ pageStateVM.btnText }}
+        </span>
+
+        <span
+          ng-click="pageStateVM.showForm = false"
+          ng-show="pageStateVM.showForm"
+          class="but"
+        >
+          <i class="fa fa-minus"></i>
+          {{ pageStateVM.btnText }}
+        </span>
+
+      </section>
+
+      <form
+        ng-show="pageStateVM.showForm"
+        name="newShowForm"
+        novalidate
+      >
+        <label for="f_venue">venue</label>
+        <input type="text" name="f_venue" id="f_venue" ng-model="pageStateVM.formData.venue"><br>
+
+        <label for="f_date">date</label>
+        <input type="text" name="f_date" id="f_date" ng-model="pageStateVM.formData.date"><br>
+
+        <label for="f_time">time</label>
+        <input type="text" name="f_time" id="f_time" ng-model="pageStateVM.formData.time"><br>
+
+        <label for="f_subtitle">subtitle</label>
+        <input type="text" name="f_subtitle" id="f_subtitle" ng-model="pageStateVM.formData.subtitle"><br>
+
+        <label for="f_address">address</label>
+        <input type="text" name="f_address" id="f_address" ng-model="pageStateVM.formData.address"><br>
+
+        <label for="f_maplink">maplink</label>
+        <input type="text" name="f_maplink" id="f_maplink" ng-model="pageStateVM.formData.maplink"><br>
+
+        <label for="f_description">description</label>
+        <textarea name="f_description" id="f_description" ng-model="pageStateVM.formData.description"></textarea><br>
+
+        <label for="f_website">website</label>
+        <input type="text" name="f_website" id="f_website" ng-model="pageStateVM.formData.website"><br>
+
+        <section class="align-right">
+          <span
+            ng-click="pageStateVM.initForm()"
+            class="text-tiny but"
+          >Clear Form</span>
+        </section>
+
+        <span
+          ng-click="pageStateVM.submitShow()"
+          class="but"
+        >Save</span>
+      </form>
+
+      <section>
+        <span
+          ng-click="pageStateVM.doLogout()"\
+          class="text-tiny but"
+        >
+          Logout
+        </span>
+      </section>
 
     </main>
 

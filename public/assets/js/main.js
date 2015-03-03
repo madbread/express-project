@@ -37563,6 +37563,86 @@ angular.module('ShowsAPI', ['authService'])
 
 }]);
 
+function showFactory($http, $q) {
+
+  var showData = {
+    shows: []
+  };
+
+  var showFactoryMethods = {};
+
+  showFactoryMethods.get = function() {
+    return showData;
+  };
+
+  showFactoryMethods.init = function() {
+
+    var deferred = $q.defer();
+
+    $http.get('/api/shows').success(function(data) {
+      showData.shows = data;
+      deferred.resolve(showData);
+    }).error(function(e) {
+      deferred.reject('An error occurred while querying the remote database');
+    });
+
+    return deferred.promise;
+
+  };
+
+  showFactoryMethods.newShow = function(show) {
+
+    var deferred = $q.defer();
+
+    $http.post('/api/shows', show)
+      .success(function(data) {
+        deferred.resolve(data);
+      }).error(function(e) {
+        deferred.reject('An error occurred while POSTing a show to the remote database');
+      });
+
+    return deferred.promise;
+
+  };
+
+  showFactoryMethods.editShow = function(id, show) {
+
+    var deferred = $q.defer();
+
+    $http.put('/api/shows/' + id, show)
+      .success(function(data) {
+        deferred.resolve(data);
+      }).error(function(e) {
+        deferred.reject('An error occurred while PUTing a show to the remote database');
+      });
+
+    return deferred.promise;
+
+  };
+
+  showFactoryMethods.deleteShow = function(id) {
+
+    var deferred = $q.defer();
+
+    $http.delete('/api/shows/' + id)
+      .success(function(data) {
+        deferred.resolve(data);
+      }).error(function(e) {
+        deferred.reject('An error occurred while deleting a show from the remote database');
+      });
+
+    return deferred.promise;
+
+  };
+
+  return showFactoryMethods;
+
+}
+showFactory.$inject = ["$http", "$q"];
+
+angular.module('ShowsAPI').
+factory('showFactory', showFactory);
+
 function userStateFactory() {
 
   var userState = {
@@ -37768,15 +37848,108 @@ loginScreen.$inject = ["userStateFactory"];
 angular.module('ShowsAPI').
 directive('loginScreen', loginScreen);
 
-function pageState(userStateFactory) {
+function pageState(userStateFactory, showFactory) {
 
   return {
     controllerAs: 'pageStateVM',
     bindToController: true,
-    controller: ["Auth", function (Auth) {
+    controller: ["Auth", "$scope", function (Auth, $scope) {
       var vm = this;
 
+      var mode = 'POST';
+
       vm.userState = userStateFactory.get();
+      vm.showData = {};
+      vm.btnText = 'New Show';
+
+      // Watch for authorization, then load shows
+      $scope.$watch(function () {
+        return vm.userState.authorized;
+      }, function (authorized) {
+        if (authorized) {
+          showFactory.init()
+            .then(function(data) {
+              vm.showData = data;
+            }, function(err) {
+              console.error('Error Getting Shows: ', err);
+            });
+        }
+      });
+
+      vm.initForm = function() {
+
+        mode = 'POST';
+        vm.btnText = 'New Show';
+
+        vm.showForm = false;
+        vm.formData = {
+          venue: '',
+          date: '',
+          time: '',
+          subtitle: '',
+          address: '',
+          maplink: '',
+          description: '',
+          website: ''
+        };
+
+      };
+
+      vm.initForm();
+
+      vm.submitShow = function() {
+
+        if (mode === 'POST') {
+
+          showFactory.newShow(vm.formdata).then(
+            function(success) {
+              console.log('Successful show post: ', success);
+              showFactory.init();
+              initForm();
+            },
+            function(error) {
+              console.error(error);
+            }
+          );
+
+        } else if (mode === 'PUT') {
+
+          showFactory.editShow(showId, vm.formdata).then(
+            function(success) {
+              console.log('Successful show post: ', success);
+              showFactory.init();
+              vm.initForm();
+            },
+            function(error) {
+              console.error(error);
+            }
+          );
+
+        }
+
+      };
+
+      vm.addShowToForm = function(show) {
+        vm.formData = show;
+        vm.showForm = true;
+        mode = 'PUT';
+        vm.btnText = 'Edit Show';
+      };
+
+      vm.deleteShow = function(id) {
+        if (confirm('Are you sure?')) {
+          showFactory.deleteShow(id).then(
+            function(success) {
+              console.log('Successful show deletion: ', success);
+              showFactory.init();
+              vm.initForm();
+            },
+            function(error) {
+              console.error(error);
+            }
+          );
+        }
+      };
 
       // function to handle logging out
       vm.doLogout = function() {
@@ -37788,7 +37961,7 @@ function pageState(userStateFactory) {
   };
 
 }
-pageState.$inject = ["userStateFactory"];
+pageState.$inject = ["userStateFactory", "showFactory"];
 
 angular.module('ShowsAPI').
 directive('pageState', pageState);

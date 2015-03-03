@@ -172,7 +172,7 @@ module.exports = function(app, express) {
       show.description = req.body.description;
       show.website     = req.body.website;
 
-      user.save(function(err) {
+      show.save(function(err) {
         if (err) {
           return res.send(err);
         }
@@ -182,7 +182,7 @@ module.exports = function(app, express) {
     })
 
     .get(function(req, res) {
-      User.find(function(err, shows) {
+      Show.find(function(err, shows) {
         if (err) res.send(err);
 
         res.json(shows);
