@@ -37905,7 +37905,7 @@ function pageState(userStateFactory, showFactory) {
             function(success) {
               console.log('Successful show post: ', success);
               showFactory.init();
-              initForm();
+              vm.initForm();
             },
             function(error) {
               console.error(error);
