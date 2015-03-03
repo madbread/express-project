@@ -37858,6 +37858,8 @@ function pageState(userStateFactory, showFactory) {
 
       var mode = 'POST';
 
+      var editShowId;
+
       vm.userState = userStateFactory.get();
       vm.showData = {};
       vm.btnText = 'New Show';
@@ -37879,6 +37881,7 @@ function pageState(userStateFactory, showFactory) {
       vm.initForm = function() {
 
         mode = 'POST';
+        editShowId = undefined;
         vm.btnText = 'New Show';
 
         vm.showForm = false;
@@ -37914,7 +37917,7 @@ function pageState(userStateFactory, showFactory) {
 
         } else if (mode === 'PUT') {
 
-          showFactory.editShow(showId, vm.formData).then(
+          showFactory.editShow(editShowId, vm.formData).then(
             function(success) {
               console.log('Successful show post: ', success);
               showFactory.init();
@@ -37930,6 +37933,7 @@ function pageState(userStateFactory, showFactory) {
       };
 
       vm.addShowToForm = function(show) {
+        editShowId = show._id;
         vm.formData = show;
         vm.showForm = true;
         mode = 'PUT';
