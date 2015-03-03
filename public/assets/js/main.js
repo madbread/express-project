@@ -37901,7 +37901,7 @@ function pageState(userStateFactory, showFactory) {
 
         if (mode === 'POST') {
 
-          showFactory.newShow(vm.formdata).then(
+          showFactory.newShow(vm.formData).then(
             function(success) {
               console.log('Successful show post: ', success);
               showFactory.init();
@@ -37914,7 +37914,7 @@ function pageState(userStateFactory, showFactory) {
 
         } else if (mode === 'PUT') {
 
-          showFactory.editShow(showId, vm.formdata).then(
+          showFactory.editShow(showId, vm.formData).then(
             function(success) {
               console.log('Successful show post: ', success);
               showFactory.init();
