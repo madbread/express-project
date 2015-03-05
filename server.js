@@ -33,6 +33,9 @@ app.use(express.static(__dirname + '/public'));
 var apiRoutes = require('./app/routes/api')(app, express);
 app.use('/api', apiRoutes);
 
+var madRoutes = require('./app/routes/mad')(app, express);
+app.use('/mad', madRoutes);
+
 // Send all other URLs to the index page
 app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname + '/public/index.html'));
