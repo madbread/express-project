@@ -8,7 +8,8 @@ var ShowSchema = new Schema({
   subtitle: {type: String},
   address: {type: String},
   maplink: {type: String},
-  description: {type: String}
+  description: {type: String},
+  website: {type: String}
 });
 
 module.exports = mongoose.model('Show', ShowSchema);
