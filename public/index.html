@@ -23,6 +23,7 @@
               <td>venue</td>
               <td>date</td>
               <td>edit</td>
+              <td>copy to new</td>
               <td>delete</td>
             </tr>
           </thead>
@@ -33,6 +34,11 @@
               <td class="align-center">
                 <a href="#" ng-click="pageStateVM.addShowToForm(show)">
                   <i class="fa fa-pencil"></i>
+                </a>
+              </td>
+              <td class="align-center">
+                <a href="#" ng-click="pageStateVM.duplicateShow(show)">
+                  <i class="fa fa-pause"></i>
                 </a>
               </td>
               <td class="align-center">

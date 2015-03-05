@@ -37940,6 +37940,12 @@ function pageState(userStateFactory, showFactory) {
         vm.btnText = 'Edit Show';
       };
 
+      vm.duplicateShow = function(show) {
+        editShowId = undefined;
+        vm.formData = angular.copy(show);
+        vm.showForm = true;
+      };
+
       vm.deleteShow = function(id) {
         if (confirm('Are you sure?')) {
           showFactory.deleteShow(id).then(
