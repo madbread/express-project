@@ -14,7 +14,7 @@
 
     <login-screen ng-if="!pageStateVM.userState.authorized"></login-screen>
 
-    <main ng-if="pageStateVM.userState.authorized">
+    <main ng-cloak ng-if="pageStateVM.userState.authorized">
 
       <section>
         <table>

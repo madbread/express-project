@@ -755,3 +755,7 @@ a.but-selection:active {
 section {
   margin: 1em 0.5em;
 }
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}

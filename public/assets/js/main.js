@@ -37563,115 +37563,6 @@ angular.module('ShowsAPI', ['authService'])
 
 }]);
 
-function showFactory($http, $q) {
-
-  var showData = {
-    shows: []
-  };
-
-  var showFactoryMethods = {};
-
-  showFactoryMethods.get = function() {
-    return showData;
-  };
-
-  showFactoryMethods.init = function() {
-
-    var deferred = $q.defer();
-
-    $http.get('/api/shows').success(function(data) {
-      showData.shows = data;
-      deferred.resolve(showData);
-    }).error(function(e) {
-      deferred.reject('An error occurred while querying the remote database');
-    });
-
-    return deferred.promise;
-
-  };
-
-  showFactoryMethods.newShow = function(show) {
-
-    var deferred = $q.defer();
-
-    $http.post('/api/shows', show)
-      .success(function(data) {
-        deferred.resolve(data);
-      }).error(function(e) {
-        deferred.reject('An error occurred while POSTing a show to the remote database');
-      });
-
-    return deferred.promise;
-
-  };
-
-  showFactoryMethods.editShow = function(id, show) {
-
-    var deferred = $q.defer();
-
-    $http.put('/api/shows/' + id, show)
-      .success(function(data) {
-        deferred.resolve(data);
-      }).error(function(e) {
-        deferred.reject('An error occurred while PUTing a show to the remote database');
-      });
-
-    return deferred.promise;
-
-  };
-
-  showFactoryMethods.deleteShow = function(id) {
-
-    var deferred = $q.defer();
-
-    $http.delete('/api/shows/' + id)
-      .success(function(data) {
-        deferred.resolve(data);
-      }).error(function(e) {
-        deferred.reject('An error occurred while deleting a show from the remote database');
-      });
-
-    return deferred.promise;
-
-  };
-
-  return showFactoryMethods;
-
-}
-showFactory.$inject = ["$http", "$q"];
-
-angular.module('ShowsAPI').
-factory('showFactory', showFactory);
-
-function userStateFactory() {
-
-  var userState = {
-    authorized: false
-  };
-
-  var userStateFactoryMethods = {};
-
-  userStateFactoryMethods.get = function() {
-    return userState;
-  };
-
-  // Setter for authorized
-  userStateFactoryMethods.authorize = function(authorized) {
-    authorized = authorized || false;
-
-    if (authorized)
-      userState.authorized = true;
-    else
-      userState.authorized = false;
-  };
-
-  return userStateFactoryMethods;
-
-}
-
-angular.module('ShowsAPI').
-factory('userStateFactory', userStateFactory);
-
 angular.module('authService', [])
 
 // ===================================================
@@ -37790,6 +37681,115 @@ angular.module('authService', [])
   return interceptorFactory;
 
 }]);
+
+function showFactory($http, $q) {
+
+  var showData = {
+    shows: []
+  };
+
+  var showFactoryMethods = {};
+
+  showFactoryMethods.get = function() {
+    return showData;
+  };
+
+  showFactoryMethods.init = function() {
+
+    var deferred = $q.defer();
+
+    $http.get('/api/shows').success(function(data) {
+      showData.shows = data;
+      deferred.resolve(showData);
+    }).error(function(e) {
+      deferred.reject('An error occurred while querying the remote database');
+    });
+
+    return deferred.promise;
+
+  };
+
+  showFactoryMethods.newShow = function(show) {
+
+    var deferred = $q.defer();
+
+    $http.post('/api/shows', show)
+      .success(function(data) {
+        deferred.resolve(data);
+      }).error(function(e) {
+        deferred.reject('An error occurred while POSTing a show to the remote database');
+      });
+
+    return deferred.promise;
+
+  };
+
+  showFactoryMethods.editShow = function(id, show) {
+
+    var deferred = $q.defer();
+
+    $http.put('/api/shows/' + id, show)
+      .success(function(data) {
+        deferred.resolve(data);
+      }).error(function(e) {
+        deferred.reject('An error occurred while PUTing a show to the remote database');
+      });
+
+    return deferred.promise;
+
+  };
+
+  showFactoryMethods.deleteShow = function(id) {
+
+    var deferred = $q.defer();
+
+    $http.delete('/api/shows/' + id)
+      .success(function(data) {
+        deferred.resolve(data);
+      }).error(function(e) {
+        deferred.reject('An error occurred while deleting a show from the remote database');
+      });
+
+    return deferred.promise;
+
+  };
+
+  return showFactoryMethods;
+
+}
+showFactory.$inject = ["$http", "$q"];
+
+angular.module('ShowsAPI').
+factory('showFactory', showFactory);
+
+function userStateFactory() {
+
+  var userState = {
+    authorized: false
+  };
+
+  var userStateFactoryMethods = {};
+
+  userStateFactoryMethods.get = function() {
+    return userState;
+  };
+
+  // Setter for authorized
+  userStateFactoryMethods.authorize = function(authorized) {
+    authorized = authorized || false;
+
+    if (authorized)
+      userState.authorized = true;
+    else
+      userState.authorized = false;
+  };
+
+  return userStateFactoryMethods;
+
+}
+
+angular.module('ShowsAPI').
+factory('userStateFactory', userStateFactory);
 
 function loginScreen(userStateFactory) {
 
